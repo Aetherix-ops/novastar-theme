@@ -46,7 +46,7 @@
 
 ```bash
 # 1. Clone this repo
-git clone https://github.com/YOUR_USERNAME/novastar-theme.git
+git clone https://github.com/Aetherix-ops/novastar-theme.git
 
 # 2. Copy CSS to your Pterodactyl public folder
 cp novastar-theme/src/novastar.css /var/www/pterodactyl/public/themes/novastar.css
@@ -116,15 +116,15 @@ PRs welcome! If you find styling bugs or want to add support for more panels:
 
 ---
 
-## 📄 License
+##  License
 
 MIT License — free to use, modify, and distribute.  
-Credit appreciated but not required. ⭐ Star the repo if you like it!
+Credit appreciated but not required.  Star the repo if you like it!
 
 ---
 
 <div align="center">
-  Made with 🩵 by <a href="https://github.com/YOUR_USERNAME">Aetherix-ops</a>
+  Made with 🩵 by <a href="https://github.com/Aetherix-ops">Aetherix-ops</a>
   <br><br>
   <img src="https://img.shields.io/badge/Pterodactyl-v1.11-00d2ff?style=flat-square&logo=pterodactyl&logoColor=white">
   <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square">
