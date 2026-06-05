@@ -1,0 +1,375 @@
+/**
+ * ╔═══════════════════════════════════════════╗
+ * ║        NOVASTAR — Pterodactyl Theme       ║
+ * ║     Dark Futuristic + Clean Minimal       ║
+ * ║   github.com/YOUR_USERNAME/novastar-theme ║
+ * ╚═══════════════════════════════════════════╝
+ *
+ * Version  : 1.0.0
+ * License  : MIT
+ * Author   : YOUR_NAME
+ */
+
+/* ── CORE VARIABLES ── */
+:root {
+  --bg-base:        #080b10;
+  --bg-panel:       #0d1117;
+  --bg-card:        #111820;
+  --bg-hover:       #161e28;
+  --border:         rgba(0, 210, 255, 0.08);
+  --border-active:  rgba(0, 210, 255, 0.28);
+  --cyan:           #00d2ff;
+  --cyan-dim:       rgba(0, 210, 255, 0.15);
+  --cyan-glow:      rgba(0, 210, 255, 0.4);
+  --green:          #00ff9d;
+  --green-dim:      rgba(0, 255, 157, 0.12);
+  --red:            #ff4466;
+  --yellow:         #ffd060;
+  --text-primary:   #e8f0f8;
+  --text-secondary: #7a8fa8;
+  --text-muted:     #3d5068;
+  --radius:         10px;
+  --radius-sm:      6px;
+}
+
+/* ── FONTS ── */
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
+/* ── GLOBAL RESET ── */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  font-family: 'JetBrains Mono', monospace !important;
+  background: var(--bg-base) !important;
+  color: var(--text-primary) !important;
+}
+
+/* ── NOISE TEXTURE ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0; opacity: 0.4;
+}
+
+/* ────────────────────────────────────────
+   NAVIGATION / SIDEBAR
+──────────────────────────────────────── */
+nav,
+.NavigationBar,
+[class*="sidebar"],
+[class*="navigation"] {
+  background: var(--bg-panel) !important;
+  border-right: 1px solid var(--border) !important;
+}
+
+nav a,
+[class*="sidebar"] a,
+[class*="nav-item"] {
+  font-family: 'JetBrains Mono', monospace !important;
+  color: var(--text-secondary) !important;
+  border-radius: var(--radius-sm) !important;
+  transition: all 0.15s ease !important;
+  border: 1px solid transparent !important;
+}
+
+nav a:hover,
+[class*="sidebar"] a:hover,
+[class*="nav-item"]:hover {
+  background: var(--bg-hover) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border) !important;
+}
+
+nav a.active,
+[class*="nav-item"].active,
+[class*="active"] > a {
+  background: var(--cyan-dim) !important;
+  color: var(--cyan) !important;
+  border-color: var(--border-active) !important;
+}
+
+/* ────────────────────────────────────────
+   HEADER / TOPBAR
+──────────────────────────────────────── */
+header,
+[class*="header"],
+[class*="topbar"] {
+  background: rgba(8, 11, 16, 0.95) !important;
+  backdrop-filter: blur(12px) !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+/* ────────────────────────────────────────
+   CARDS / PANELS / BOXES
+──────────────────────────────────────── */
+[class*="card"],
+[class*="box"],
+[class*="panel"],
+.ContentBox,
+.GreyRowBox {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius) !important;
+  transition: border-color 0.2s, transform 0.2s !important;
+}
+
+[class*="card"]:hover,
+[class*="box"]:hover {
+  border-color: var(--border-active) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* ────────────────────────────────────────
+   BUTTONS
+──────────────────────────────────────── */
+button,
+[class*="btn"],
+[class*="button"],
+input[type="submit"],
+input[type="button"] {
+  font-family: 'Syne', sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  border-radius: var(--radius-sm) !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer !important;
+}
+
+/* Primary button */
+button[class*="primary"],
+[class*="btn-primary"],
+[class*="button-primary"] {
+  background: var(--cyan-dim) !important;
+  color: var(--cyan) !important;
+  border: 1px solid var(--border-active) !important;
+}
+
+button[class*="primary"]:hover,
+[class*="btn-primary"]:hover {
+  background: rgba(0, 210, 255, 0.25) !important;
+  box-shadow: 0 0 16px rgba(0, 210, 255, 0.2) !important;
+}
+
+/* Danger button */
+button[class*="danger"],
+[class*="btn-danger"],
+[class*="button-danger"] {
+  background: rgba(255, 68, 102, 0.1) !important;
+  color: var(--red) !important;
+  border: 1px solid rgba(255, 68, 102, 0.3) !important;
+}
+
+button[class*="danger"]:hover {
+  background: rgba(255, 68, 102, 0.2) !important;
+  box-shadow: 0 0 16px rgba(255, 68, 102, 0.2) !important;
+}
+
+/* ────────────────────────────────────────
+   FORMS & INPUTS
+──────────────────────────────────────── */
+input,
+textarea,
+select {
+  font-family: 'JetBrains Mono', monospace !important;
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-sm) !important;
+  color: var(--text-primary) !important;
+  transition: border-color 0.2s !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none !important;
+  border-color: var(--border-active) !important;
+  box-shadow: 0 0 0 3px var(--cyan-dim) !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--text-muted) !important;
+}
+
+label {
+  font-family: 'Syne', sans-serif !important;
+  font-size: 11px !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  color: var(--text-muted) !important;
+}
+
+/* ────────────────────────────────────────
+   TABLES
+──────────────────────────────────────── */
+table {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  width: 100% !important;
+}
+
+thead tr {
+  background: rgba(0, 0, 0, 0.2) !important;
+}
+
+thead th {
+  font-family: 'Syne', sans-serif !important;
+  font-size: 9px !important;
+  letter-spacing: 0.2em !important;
+  text-transform: uppercase !important;
+  color: var(--text-muted) !important;
+  border-bottom: 1px solid var(--border) !important;
+  padding: 10px 16px !important;
+}
+
+tbody tr {
+  border-bottom: 1px solid var(--border) !important;
+  transition: background 0.15s !important;
+}
+
+tbody tr:hover {
+  background: var(--bg-hover) !important;
+}
+
+tbody td {
+  font-size: 12px !important;
+  color: var(--text-secondary) !important;
+  padding: 12px 16px !important;
+}
+
+/* ────────────────────────────────────────
+   STATUS BADGES
+──────────────────────────────────────── */
+[class*="status"],
+[class*="badge"],
+[class*="chip"] {
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 9px !important;
+  letter-spacing: 0.15em !important;
+  text-transform: uppercase !important;
+  border-radius: 20px !important;
+  padding: 3px 8px !important;
+}
+
+[class*="running"],
+[class*="online"],
+[class*="active"][class*="status"] {
+  color: var(--green) !important;
+  background: var(--green-dim) !important;
+}
+
+[class*="offline"],
+[class*="stopped"],
+[class*="error"] {
+  color: var(--red) !important;
+  background: rgba(255, 68, 102, 0.1) !important;
+}
+
+[class*="starting"],
+[class*="pending"],
+[class*="installing"] {
+  color: var(--yellow) !important;
+  background: rgba(255, 208, 96, 0.1) !important;
+}
+
+/* ────────────────────────────────────────
+   PROGRESS BARS
+──────────────────────────────────────── */
+[class*="progress"],
+[class*="Progress"] {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border-radius: 2px !important;
+  overflow: hidden !important;
+  height: 4px !important;
+}
+
+[class*="progress"] > *,
+[class*="Progress"] > * {
+  background: linear-gradient(90deg, var(--cyan), var(--green)) !important;
+  box-shadow: 0 0 6px var(--cyan-glow) !important;
+  border-radius: 2px !important;
+  transition: width 0.6s ease !important;
+}
+
+/* ────────────────────────────────────────
+   SCROLLBAR
+──────────────────────────────────────── */
+::-webkit-scrollbar        { width: 4px; height: 4px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  { background: var(--text-muted); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+
+/* ────────────────────────────────────────
+   TYPOGRAPHY
+──────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Syne', sans-serif !important;
+  font-weight: 800 !important;
+  color: var(--text-primary) !important;
+  letter-spacing: -0.01em !important;
+}
+
+p, span, div {
+  color: inherit;
+}
+
+a {
+  color: var(--cyan) !important;
+  text-decoration: none !important;
+  transition: opacity 0.15s !important;
+}
+
+a:hover { opacity: 0.8 !important; }
+
+code, pre, [class*="code"] {
+  font-family: 'JetBrains Mono', monospace !important;
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-sm) !important;
+  color: var(--cyan) !important;
+}
+
+/* ────────────────────────────────────────
+   MODALS / DIALOGS
+──────────────────────────────────────── */
+[class*="modal"],
+[class*="dialog"],
+[class*="overlay"] {
+  background: rgba(8, 11, 16, 0.85) !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+[class*="modal"] > *,
+[class*="dialog"] > * {
+  background: var(--bg-panel) !important;
+  border: 1px solid var(--border-active) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* ────────────────────────────────────────
+   ALERTS / NOTIFICATIONS
+──────────────────────────────────────── */
+[class*="alert"],
+[class*="notification"],
+[class*="toast"] {
+  font-family: 'JetBrains Mono', monospace !important;
+  border-radius: var(--radius-sm) !important;
+  border-left: 3px solid var(--cyan) !important;
+  background: var(--bg-card) !important;
+}
+
+[class*="alert-danger"],
+[class*="alert-error"] {
+  border-left-color: var(--red) !important;
+}
+
+[class*="alert-success"] {
+  border-left-color: var(--green) !important;
+}
+
+[class*="alert-warning"] {
+  border-left-color: var(--yellow) !important;
+                         }
+  
