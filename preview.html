@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NovaStar — Pterodactyl Theme Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-base: #080b10;
+    --bg-panel: #0d1117;
+    --bg-card: #111820;
+    --bg-hover: #161e28;
+    --border: rgba(0,210,255,0.08);
+    --border-active: rgba(0,210,255,0.28);
+    --cyan: #00d2ff;
+    --cyan-dim: rgba(0,210,255,0.15);
+    --cyan-glow: rgba(0,210,255,0.4);
+    --green: #00ff9d;
+    --green-dim: rgba(0,255,157,0.12);
+    --red: #ff4466;
+    --yellow: #ffd060;
+    --text-primary: #e8f0f8;
+    --text-secondary: #7a8fa8;
+    --text-muted: #3d5068;
+    --sidebar-w: 220px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--bg-base);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0; opacity: 0.4;
+  }
+
+  /* ── TAB SWITCHER ── */
+  .tab-bar {
+    position: fixed; top: 0; left: 0; right: 0;
+    display: flex; gap: 2px; padding: 12px 20px;
+    background: rgba(8,11,16,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+  }
+  .tab-btn {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 6px 18px; border-radius: 4px;
+    border: 1px solid transparent;
+    background: transparent; color: var(--text-muted);
+    cursor: pointer; transition: all 0.2s;
+  }
+  .tab-btn:hover { color: var(--text-secondary); border-color: var(--border); }
+  .tab-btn.active {
+    background: var(--cyan-dim);
+    border-color: var(--border-active);
+    color: var(--cyan);
+  }
+  .logo-badge {
+    margin-left: auto;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px; font-weight: 800; letter-spacing: 0.05em;
+    color: var(--cyan);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .logo-badge::before {
+    content: '';
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: 0 0 10px var(--cyan-glow);
+    animation: pulse-dot 2s infinite;
+  }
+  @keyframes pulse-dot {
+    0%,100% { opacity:1; box-shadow: 0 0 6px var(--cyan-glow); }
+    50% { opacity:0.5; box-shadow: 0 0 14px var(--cyan-glow); }
+  }
+
+  /* ── PANELS ── */
+  .panel { display: none; padding-top: 56px; }
+  .panel.active { display: flex; }
+
+  /* ══════════════════════════════
+     CLIENT PANEL
+  ══════════════════════════════ */
+  .client-layout {
+    display: flex; min-height: calc(100vh - 56px);
+  }
+
+  /* Sidebar */
+  .sidebar {
+    width: var(--sidebar-w); flex-shrink: 0;
+    background: var(--bg-panel);
+    border-right: 1px solid var(--border);
+    padding: 24px 0;
+    position: relative;
+    animation: slide-in 0.4s ease;
+  }
+  @keyframes slide-in {
+    from { opacity:0; transform: translateX(-12px); }
+    to   { opacity:1; transform: translateX(0); }
+  }
+  .sidebar::after {
+    content: '';
+    position: absolute; top: 0; right: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--cyan-dim) 40%, var(--cyan-dim) 60%, transparent);
+  }
+
+  .sidebar-section {
+    padding: 0 12px 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 8px;
+  }
+  .sidebar-label {
+    font-size: 9px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--text-muted);
+    padding: 0 12px; margin-bottom: 6px;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 12px; border-radius: 6px;
+    font-size: 12px; color: var(--text-secondary);
+    cursor: pointer; transition: all 0.15s;
+    border: 1px solid transparent;
+    position: relative; overflow: hidden;
+  }
+  .nav-item:hover {
+    background: var(--bg-hover); color: var(--text-primary);
+    border-color: var(--border);
+  }
+  .nav-item.active {
+    background: var(--cyan-dim); color: var(--cyan);
+    border-color: var(--border-active);
+  }
+  .nav-item.active::before {
+    content: '';
+    position: absolute; left: 0; top: 20%; bottom: 20%;
+    width: 2px; background: var(--cyan);
+    border-radius: 0 2px 2px 0;
+    box-shadow: 0 0 8px var(--cyan-glow);
+  }
+  .nav-icon { width: 16px; text-align: center; font-size: 14px; }
+
+  /* Main content */
+  .main-content {
+    flex: 1; padding: 28px 32px;
+    overflow-y: auto;
+    animation: fade-up 0.5s ease;
+  }
+  @keyframes fade-up {
+    from { opacity:0; transform: translateY(10px); }
+    to   { opacity:1; transform: translateY(0); }
+  }
+
+  .page-header {
+    margin-bottom: 28px;
+    display: flex; align-items: flex-end; justify-content: space-between;
+  }
+  .page-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px; font-weight: 800;
+    color: var(--text-primary); letter-spacing: -0.01em;
+  }
+  .page-subtitle {
+    font-size: 11px; color: var(--text-muted);
+    margin-top: 4px; letter-spacing: 0.05em;
+  }
+  .btn-primary {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 8px 20px; border-radius: 6px;
+    border: 1px solid var(--border-active);
+    background: var(--cyan-dim); color: var(--cyan);
+    cursor: pointer; transition: all 0.2s;
+  }
+  .btn-primary:hover {
+    background: rgba(0,210,255,0.25);
+    box-shadow: 0 0 16px rgba(0,210,255,0.2);
+  }
+
+  /* Stat cards */
+  .stats-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+    margin-bottom: 28px;
+  }
+  .stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px; padding: 18px;
+    position: relative; overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: default;
+  }
+  .stat-card:hover {
+    border-color: var(--border-active);
+    transform: translateY(-2px);
+  }
+  .stat-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--cyan-dim), transparent);
+  }
+  .stat-card.green { --accent: var(--green); --accent-dim: var(--green-dim); }
+  .stat-card.yellow { --accent: var(--yellow); --accent-dim: rgba(255,208,96,0.12); }
+  .stat-card.red { --accent: var(--red); --accent-dim: rgba(255,68,102,0.12); }
+  .stat-card.cyan { --accent: var(--cyan); --accent-dim: var(--cyan-dim); }
+  .stat-card:hover { border-color: color-mix(in srgb, var(--accent,var(--cyan)) 50%, transparent); }
+
+  .stat-label {
+    font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--text-muted); margin-bottom: 10px;
+  }
+  .stat-value {
+    font-family: 'Syne', sans-serif;
+    font-size: 26px; font-weight: 800;
+    color: var(--accent, var(--cyan));
+  }
+  .stat-sub { font-size: 10px; color: var(--text-muted); margin-top: 4px; }
+
+  /* Server list */
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--text-secondary); margin-bottom: 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-title::after {
+    content: ''; flex: 1; height: 1px;
+    background: linear-gradient(90deg, var(--border), transparent);
+  }
+
+  .server-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px;
+  }
+  .server-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px; padding: 18px 20px;
+    cursor: pointer; transition: all 0.2s;
+    position: relative;
+  }
+  .server-card:hover {
+    border-color: var(--border-active);
+    background: var(--bg-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+  .server-header {
+    display: flex; align-items: center;
+    justify-content: space-between; margin-bottom: 14px;
+  }
+  .server-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px; font-weight: 700;
+  }
+  .status-badge {
+    font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase;
+    padding: 3px 8px; border-radius: 20px;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .status-badge::before {
+    content: ''; width: 5px; height: 5px; border-radius: 50%;
+    background: currentColor;
+  }
+  .status-online { color: var(--green); background: var(--green-dim); }
+  .status-offline { color: var(--red); background: rgba(255,68,102,0.1); }
+  .status-starting { color: var(--yellow); background: rgba(255,208,96,0.1); }
+
+  .usage-row {
+    display: flex; justify-content: space-between;
+    font-size: 10px; color: var(--text-muted); margin-bottom: 5px;
+  }
+  .usage-val { color: var(--text-secondary); }
+  .progress-bar {
+    height: 3px; background: rgba(255,255,255,0.05);
+    border-radius: 2px; overflow: hidden; margin-bottom: 8px;
+  }
+  .progress-fill {
+    height: 100%; border-radius: 2px;
+    background: linear-gradient(90deg, var(--cyan), var(--green));
+    box-shadow: 0 0 6px rgba(0,210,255,0.4);
+    transition: width 0.8s ease;
+  }
+  .progress-fill.warn { background: linear-gradient(90deg, var(--yellow), var(--red)); }
+
+  .server-footer {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 12px; padding-top: 12px;
+    border-top: 1px solid var(--border);
+    font-size: 10px; color: var(--text-muted);
+  }
+  .server-ip { font-family: 'JetBrains Mono'; color: var(--text-secondary); }
+
+  /* ══════════════════════════════
+     ADMIN PANEL
+  ══════════════════════════════ */
+  .admin-layout {
+    display: flex; min-height: calc(100vh - 56px);
+  }
+
+  .admin-sidebar {
+    width: 200px; flex-shrink: 0;
+    background: var(--bg-panel);
+    border-right: 1px solid var(--border);
+    padding: 20px 0;
+  }
+  .admin-sidebar-section { margin-bottom: 24px; }
+  .admin-badge {
+    font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--red); padding: 0 16px; margin-bottom: 8px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .admin-badge::before {
+    content: '⬡'; font-size: 8px;
+  }
+  .admin-nav-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 16px; font-size: 12px; color: var(--text-secondary);
+    cursor: pointer; transition: all 0.15s; border-left: 2px solid transparent;
+  }
+  .admin-nav-item:hover { background: var(--bg-hover); color: var(--text-primary); }
+  .admin-nav-item.active {
+    color: var(--cyan); background: var(--cyan-dim);
+    border-left-color: var(--cyan);
+  }
+
+  .admin-main { flex: 1; padding: 24px 28px; overflow-y: auto; }
+
+  /* Data table */
+  .admin-toolbar {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 20px;
+  }
+  .search-box {
+    flex: 1; display: flex; align-items: center; gap: 8px;
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 6px; padding: 8px 14px;
+    font-size: 11px; color: var(--text-secondary);
+    transition: border-color 0.2s;
+  }
+  .search-box:hover { border-color: var(--border-active); }
+  .search-box input {
+    background: none; border: none; outline: none;
+    font-family: 'JetBrains Mono'; font-size: 11px;
+    color: var(--text-primary); flex: 1;
+  }
+  .search-box input::placeholder { color: var(--text-muted); }
+
+  .data-table {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px; overflow: hidden;
+  }
+  .table-head {
+    display: grid; grid-template-columns: 2fr 1.5fr 1fr 1fr 1fr 100px;
+    padding: 10px 16px;
+    background: rgba(0,0,0,0.2);
+    border-bottom: 1px solid var(--border);
+    font-size: 9px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--text-muted);
+  }
+  .table-row {
+    display: grid; grid-template-columns: 2fr 1.5fr 1fr 1fr 1fr 100px;
+    padding: 12px 16px; border-bottom: 1px solid var(--border);
+    font-size: 11px; align-items: center;
+    transition: background 0.15s; cursor: pointer;
+  }
+  .table-row:last-child { border-bottom: none; }
+  .table-row:hover { background: var(--bg-hover); }
+
+  .user-cell { display: flex; align-items: center; gap: 10px; }
+  .avatar {
+    width: 28px; height: 28px; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700;
+    font-family: 'Syne', sans-serif;
+  }
+  .av-cyan { background: var(--cyan-dim); color: var(--cyan); }
+  .av-green { background: var(--green-dim); color: var(--green); }
+  .av-red { background: rgba(255,68,102,0.1); color: var(--red); }
+  .av-yellow { background: rgba(255,208,96,0.1); color: var(--yellow); }
+
+  .user-info .name { color: var(--text-primary); font-size: 12px; }
+  .user-info .email { font-size: 10px; color: var(--text-muted); margin-top: 1px; }
+
+  .role-chip {
+    font-size: 9px; letter-spacing: 0.1em;
+    text-transform: uppercase; padding: 2px 8px;
+    border-radius: 20px; border: 1px solid;
+    display: inline-block;
+  }
+  .role-admin { color: var(--red); border-color: rgba(255,68,102,0.3); background: rgba(255,68,102,0.05); }
+  .role-user { color: var(--cyan); border-color: var(--border-active); background: var(--cyan-dim); }
+
+  .plan-label { font-size: 10px; }
+  .plan-pro { color: var(--yellow); }
+  .plan-basic { color: var(--text-secondary); }
+
+  .action-btns { display: flex; gap: 6px; }
+  .icon-btn {
+    width: 26px; height: 26px; border-radius: 5px;
+    border: 1px solid var(--border); background: transparent;
+    color: var(--text-muted); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; transition: all 0.15s;
+  }
+  .icon-btn:hover { border-color: var(--border-active); color: var(--cyan); background: var(--cyan-dim); }
+  .icon-btn.del:hover { border-color: rgba(255,68,102,0.4); color: var(--red); background: rgba(255,68,102,0.08); }
+
+  /* System monitor */
+  .monitor-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+    margin-bottom: 24px;
+  }
+  .monitor-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px;
+  }
+  .monitor-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 14px;
+  }
+  .monitor-title { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); }
+  .monitor-pct {
+    font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800;
+    color: var(--cyan);
+  }
+  .monitor-pct.warn { color: var(--yellow); }
+  .monitor-pct.crit { color: var(--red); }
+
+  .bar-track {
+    height: 4px; background: rgba(255,255,255,0.04);
+    border-radius: 2px; overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%; border-radius: 2px;
+    background: linear-gradient(90deg, var(--cyan), rgba(0,210,255,0.6));
+  }
+  .bar-fill.warn { background: linear-gradient(90deg, var(--yellow), rgba(255,208,96,0.5)); }
+  .bar-fill.crit { background: linear-gradient(90deg, var(--red), rgba(255,68,102,0.5)); }
+  .monitor-sub { font-size: 10px; color: var(--text-muted); margin-top: 8px; }
+
+  /* Activity log */
+  .log-list { display: flex; flex-direction: column; gap: 2px; }
+  .log-item {
+    display: flex; align-items: baseline; gap: 10px;
+    padding: 8px 14px; border-radius: 6px;
+    font-size: 10px; transition: background 0.15s; cursor: default;
+  }
+  .log-item:hover { background: var(--bg-hover); }
+  .log-time { color: var(--text-muted); width: 52px; flex-shrink: 0; font-size: 9px; }
+  .log-event { flex: 1; color: var(--text-secondary); }
+  .log-event strong { color: var(--text-primary); font-weight: 500; }
+  .log-type {
+    font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 2px 6px; border-radius: 3px;
+  }
+  .lt-info { color: var(--cyan); background: var(--cyan-dim); }
+  .lt-warn { color: var(--yellow); background: rgba(255,208,96,0.08); }
+  .lt-err  { color: var(--red); background: rgba(255,68,102,0.08); }
+  .lt-ok   { color: var(--green); background: var(--green-dim); }
+
+  /* Responsive hint */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('client')">◈ Client Panel</button>
+  <button class="tab-btn" onclick="switchTab('admin')">⬡ Admin Panel</button>
+  <div class="logo-badge">NOVASTAR</div>
+</div>
+
+<!-- ══════════ CLIENT PANEL ══════════ -->
+<div id="client" class="panel active">
+  <div class="client-layout">
+
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div style="padding: 0 16px 20px; border-bottom: 1px solid var(--border); margin-bottom: 16px;">
+        <div style="font-family:'Syne',sans-serif; font-size:15px; font-weight:800; color:var(--text-primary);">jhones<span style="color:var(--cyan)">_</span></div>
+        <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">jhones@lunexia.web.id</div>
+      </div>
+
+      <div class="sidebar-label">Dashboard</div>
+      <div class="nav-item active"><span class="nav-icon">▦</span> Overview</div>
+      <div class="nav-item"><span class="nav-icon">◈</span> Servers</div>
+      <br>
+      <div class="sidebar-label">Account</div>
+      <div class="nav-item"><span class="nav-icon">⊙</span> API Keys</div>
+      <div class="nav-item"><span class="nav-icon">◐</span> SSH Keys</div>
+      <div class="nav-item"><span class="nav-icon">△</span> Activity</div>
+      <br>
+      <div class="sidebar-label">Support</div>
+      <div class="nav-item"><span class="nav-icon">◻</span> Documentation</div>
+      <div class="nav-item"><span class="nav-icon">◇</span> Discord</div>
+    </nav>
+
+    <!-- Main -->
+    <main class="main-content">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Dashboard</div>
+          <div class="page-subtitle">// OVERVIEW · ALL SERVERS</div>
+        </div>
+        <button class="btn-primary">+ New Server</button>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card cyan">
+          <div class="stat-label">Total Servers</div>
+          <div class="stat-value">4</div>
+          <div class="stat-sub">2 online · 1 starting</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-label">RAM Usage</div>
+          <div class="stat-value">6.4<span style="font-size:14px">GB</span></div>
+          <div class="stat-sub">of 16 GB allocated</div>
+        </div>
+        <div class="stat-card yellow">
+          <div class="stat-label">CPU Load</div>
+          <div class="stat-value">34<span style="font-size:14px">%</span></div>
+          <div class="stat-sub">avg across all</div>
+        </div>
+        <div class="stat-card red">
+          <div class="stat-label">Disk Used</div>
+          <div class="stat-value">82<span style="font-size:14px">GB</span></div>
+          <div class="stat-sub">of 200 GB total</div>
+        </div>
+      </div>
+
+      <!-- Servers -->
+      <div class="section-title">Servers</div>
+      <div class="server-grid">
+
+        <div class="server-card">
+          <div class="server-header">
+            <div class="server-name">TelisSMP</div>
+            <div class="status-badge status-online">Online</div>
+          </div>
+          <div class="usage-row"><span>RAM</span><span class="usage-val">2.1 / 4 GB</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:52%"></div></div>
+          <div class="usage-row"><span>CPU</span><span class="usage-val">28%</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:28%"></div></div>
+          <div class="server-footer">
+            <span class="server-ip">telissmmp.my.id:25565</span>
+            <span>Minecraft Java</span>
+          </div>
+        </div>
+
+        <div class="server-card">
+          <div class="server-header">
+            <div class="server-name">Lunexia Bot</div>
+            <div class="status-badge status-online">Online</div>
+          </div>
+          <div class="usage-row"><span>RAM</span><span class="usage-val">512 / 1024 MB</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:50%"></div></div>
+          <div class="usage-row"><span>CPU</span><span class="usage-val">12%</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:12%"></div></div>
+          <div class="server-footer">
+            <span class="server-ip">174.138.17.136</span>
+            <span>Node.js</span>
+          </div>
+        </div>
+
+        <div class="server-card">
+          <div class="server-header">
+            <div class="server-name">Dev API</div>
+            <div class="status-badge status-starting">Starting</div>
+          </div>
+          <div class="usage-row"><span>RAM</span><span class="usage-val">0 / 2 GB</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:2%"></div></div>
+          <div class="usage-row"><span>CPU</span><span class="usage-val">0%</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+          <div class="server-footer">
+            <span class="server-ip">174.138.17.136:3000</span>
+            <span>Python</span>
+          </div>
+        </div>
+
+        <div class="server-card">
+          <div class="server-header">
+            <div class="server-name">Backup Node</div>
+            <div class="status-badge status-offline">Offline</div>
+          </div>
+          <div class="usage-row"><span>RAM</span><span class="usage-val">0 / 8 GB</span></div>
+          <div class="progress-bar"><div class="progress-fill warn" style="width:0%"></div></div>
+          <div class="usage-row"><span>CPU</span><span class="usage-val">0%</span></div>
+          <div class="progress-bar"><div class="progress-fill warn" style="width:0%"></div></div>
+          <div class="server-footer">
+            <span class="server-ip">174.138.17.136</span>
+            <span>Ubuntu 24.04</span>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ══════════ ADMIN PANEL ══════════ -->
+<div id="admin" class="panel">
+  <div class="admin-layout">
+
+    <nav class="admin-sidebar">
+      <div style="padding:0 16px 16px; border-bottom:1px solid var(--border); margin-bottom:16px;">
+        <div style="font-family:'Syne',sans-serif; font-size:11px; font-weight:800; letter-spacing:0.1em; color:var(--red);">ADMIN CONTROL</div>
+      </div>
+      <div class="admin-sidebar-section">
+        <div class="admin-badge">Overview</div>
+        <div class="admin-nav-item active">▦ Dashboard</div>
+        <div class="admin-nav-item">⊙ System Monitor</div>
+        <div class="admin-nav-item">△ Activity Log</div>
+      </div>
+      <div class="admin-sidebar-section">
+        <div class="admin-badge">Management</div>
+        <div class="admin-nav-item">◈ All Servers</div>
+        <div class="admin-nav-item">◻ Users</div>
+        <div class="admin-nav-item">◐ Nodes</div>
+        <div class="admin-nav-item">◇ Allocations</div>
+      </div>
+      <div class="admin-sidebar-section">
+        <div class="admin-badge">Config</div>
+        <div class="admin-nav-item">⬡ Nests / Eggs</div>
+        <div class="admin-nav-item">▷ Databases</div>
+        <div class="admin-nav-item">⚙ Settings</div>
+      </div>
+    </nav>
+
+    <main class="admin-main">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Admin Overview</div>
+          <div class="page-subtitle">// SYSTEM HEALTH · USER MANAGEMENT</div>
+        </div>
+        <button class="btn-primary">+ Create User</button>
+      </div>
+
+      <!-- System monitor -->
+      <div class="section-title">System Monitor</div>
+      <div class="monitor-grid">
+        <div class="monitor-card">
+          <div class="monitor-header">
+            <div class="monitor-title">CPU Usage</div>
+            <div class="monitor-pct">34%</div>
+          </div>
+          <div class="bar-track"><div class="bar-fill" style="width:34%"></div></div>
+          <div class="monitor-sub">8 cores · Intel Xeon E5</div>
+        </div>
+        <div class="monitor-card">
+          <div class="monitor-header">
+            <div class="monitor-title">Memory</div>
+            <div class="monitor-pct warn">71%</div>
+          </div>
+          <div class="bar-track"><div class="bar-fill warn" style="width:71%"></div></div>
+          <div class="monitor-sub">11.4 / 16 GB used</div>
+        </div>
+        <div class="monitor-card">
+          <div class="monitor-header">
+            <div class="monitor-title">Disk I/O</div>
+            <div class="monitor-pct">18%</div>
+          </div>
+          <div class="bar-track"><div class="bar-fill" style="width:18%"></div></div>
+          <div class="monitor-sub">82 / 200 GB · NVMe</div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <!-- User table -->
+        <div>
+          <div class="section-title">Users</div>
+          <div class="data-table">
+            <div class="table-head">
+              <span>User</span>
+              <span>Email</span>
+              <span>Role</span>
+              <span>Plan</span>
+              <span>Servers</span>
+              <span>Actions</span>
+            </div>
+            <div class="table-row">
+              <div class="user-cell">
+                <div class="avatar av-cyan">J</div>
+                <div class="user-info"><div class="name">jhones</div><div class="email">Owner</div></div>
+              </div>
+              <span style="font-size:10px;color:var(--text-muted)">jhones@lunexia.web.id</span>
+              <span><div class="role-chip role-admin">Admin</div></span>
+              <span class="plan-label plan-pro">⬡ Pro</span>
+              <span style="color:var(--text-secondary)">4</span>
+              <div class="action-btns">
+                <button class="icon-btn">✎</button>
+                <button class="icon-btn del">✕</button>
+              </div>
+            </div>
+            <div class="table-row">
+              <div class="user-cell">
+                <div class="avatar av-green">A</div>
+                <div class="user-info"><div class="name">alex_mc</div><div class="email">User</div></div>
+              </div>
+              <span style="font-size:10px;color:var(--text-muted)">alex@mail.com</span>
+              <span><div class="role-chip role-user">User</div></span>
+              <span class="plan-label plan-pro">⬡ Pro</span>
+              <span style="color:var(--text-secondary)">2</span>
+              <div class="action-btns">
+                <button class="icon-btn">✎</button>
+                <button class="icon-btn del">✕</button>
+              </div>
+            </div>
+            <div class="table-row">
+              <div class="user-cell">
+                <div class="avatar av-yellow">R</div>
+                <div class="user-info"><div class="name">rian99</div><div class="email">User</div></div>
+              </div>
+              <span style="font-size:10px;color:var(--text-muted)">rian@gmail.com</span>
+              <span><div class="role-chip role-user">User</div></span>
+              <span class="plan-label plan-basic">Basic</span>
+              <span style="color:var(--text-secondary)">1</span>
+              <div class="action-btns">
+                <button class="icon-btn">✎</button>
+                <button class="icon-btn del">✕</button>
+              </div>
+            </div>
+            <div class="table-row">
+              <div class="user-cell">
+                <div class="avatar av-red">S</div>
+                <div class="user-info"><div class="name">sarah_dev</div><div class="email">User</div></div>
+              </div>
+              <span style="font-size:10px;color:var(--text-muted)">sarah@dev.io</span>
+              <span><div class="role-chip role-user">User</div></span>
+              <span class="plan-label plan-basic">Basic</span>
+              <span style="color:var(--text-secondary)">1</span>
+              <div class="action-btns">
+                <button class="icon-btn">✎</button>
+                <button class="icon-btn del">✕</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Activity log -->
+        <div>
+          <div class="section-title">Recent Activity</div>
+          <div class="data-table">
+            <div class="log-list">
+              <div class="log-item">
+                <span class="log-time">14:32</span>
+                <span class="log-event"><strong>TelisSMP</strong> started by jhones</span>
+                <span class="log-type lt-ok">OK</span>
+              </div>
+              <div class="log-item">
+                <span class="log-time">14:28</span>
+                <span class="log-event"><strong>alex_mc</strong> created new server</span>
+                <span class="log-type lt-info">INFO</span>
+              </div>
+              <div class="log-item">
+                <span class="log-time">14:15</span>
+                <span class="log-event"><strong>Backup Node</strong> stopped unexpectedly</span>
+                <span class="log-type lt-err">ERR</span>
+              </div>
+              <div class="log-item">
+                <span class="log-time">13:55</span>
+                <span class="log-event"><strong>Memory</strong> threshold at 71%</span>
+                <span class="log-type lt-warn">WARN</span>
+              </div>
+              <div class="log-item">
+                <span class="log-time">13:40</span>
+                <span class="log-event"><strong>sarah_dev</strong> registered account</span>
+                <span class="log-type lt-info">INFO</span>
+              </div>
+              <div class="log-item">
+                <span class="log-time">13:22</span>
+                <span class="log-event"><strong>Dev API</strong> deployed by jhones</span>
+                <span class="log-type lt-ok">OK</span>
+              </div>
+              <div class="log-item">
+                <span class="log-time">12:50</span>
+                <span class="log-event"><strong>Node-1</strong> SSL cert renewed</span>
+                <span class="log-type lt-ok">OK</span>
+              </div>
+              <div class="log-item">
+                <span class="log-time">12:31</span>
+                <span class="log-event"><strong>rian99</strong> changed password</span>
+                <span class="log-type lt-info">INFO</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script>
+  function switchTab(tab) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(tab).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  // Animate progress bars on load
+  window.addEventListener('load', () => {
+    document.querySelectorAll('.progress-fill, .bar-fill').forEach(el => {
+      const w = el.style.width;
+      el.style.width = '0%';
+      setTimeout(() => { el.style.width = w; }, 300);
+    });
+  });
+</script>
+</body>
+</html>
