@@ -1,4 +1,4 @@
-# 🌟 NovaStar — Pterodactyl Theme
+#  NovaStar — Pterodactyl Theme
 
 > A **Dark Futuristic + Clean Minimal** theme for Pterodactyl Panel.  
 > Cyberpunk-inspired aesthetics with sharp neon accents and a clean, pro layout.
@@ -7,19 +7,19 @@
 
 ---
 
-## ✨ Features
+##  Features
 
-- 🎨 **Dark Futuristic** design with `#00d2ff` cyan neon accents
-- 🧹 **Clean & Minimal** — no visual clutter, everything is purposeful
-- ✍️ **JetBrains Mono + Syne** font pairing for that dev-terminal aesthetic
-- 📐 Covers **Client Panel** and **Admin Panel**
-- 💡 Styled: nav, cards, buttons, forms, tables, modals, alerts, progress bars
-- 🖱️ Custom slim scrollbar
-- 📦 Single CSS file — easy to install
+-  **Dark Futuristic** design with `#00d2ff` cyan neon accents
+-  **Clean & Minimal** — no visual clutter, everything is purposeful
+-  **JetBrains Mono + Syne** font pairing for that dev-terminal aesthetic
+-  Covers **Client Panel** and **Admin Panel**
+-  Styled: nav, cards, buttons, forms, tables, modals, alerts, progress bars
+-  Custom slim scrollbar
+-  Single CSS file — easy to install
 
 ---
 
-## 📸 Preview
+##  Preview
 
 | Client Panel | Admin Panel |
 |---|---|
@@ -29,7 +29,7 @@
 
 ---
 
-## 🚀 Installation
+##  Installation
 
 ### Method 1 — Custom CSS Inject (Recommended)
 
@@ -59,7 +59,7 @@ Then reference it in your panel config or blade template:
 
 ---
 
-## 🎨 Customization
+##  Customization
 
 All colors are defined as CSS variables at the top of `novastar.css`. Easy to tweak:
 
@@ -79,7 +79,7 @@ Want a **purple** accent instead of cyan? Change `--cyan: #a855f7;` and you're d
 
 ---
 
-## 🗂️ File Structure
+##  File Structure
 
 ```
 novastar-theme/
@@ -95,7 +95,7 @@ novastar-theme/
 
 ---
 
-## 🧪 Tested On
+##  Tested On
 
 | Pterodactyl Version | Status |
 |---|---|
@@ -105,7 +105,7 @@ novastar-theme/
 
 ---
 
-## 🤝 Contributing
+##  Contributing
 
 PRs welcome! If you find styling bugs or want to add support for more panels:
 
@@ -124,7 +124,7 @@ Credit appreciated but not required. ⭐ Star the repo if you like it!
 ---
 
 <div align="center">
-  Made with 🩵 by <a href="https://github.com/YOUR_USERNAME">YOUR_USERNAME</a>
+  Made with 🩵 by <a href="https://github.com/YOUR_USERNAME">Aetherix-ops</a>
   <br><br>
   <img src="https://img.shields.io/badge/Pterodactyl-v1.11-00d2ff?style=flat-square&logo=pterodactyl&logoColor=white">
   <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square">
